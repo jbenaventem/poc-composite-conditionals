@@ -11,25 +11,15 @@ outputs:
     value: ${{ steps.set-maven.outputs.is-maven }}
 runs:
   using: "composite"
-  env:
-    IS_MAVEN: true
   steps:
-    - name: Use container
-      uses: actions/checkout@v2
     - name: Checks maven technology...
+      shell: bash
       run: |
         FILE=pom.xml     
         if [ $FILE does not exist ]; then
           echo "File $FILE does not exist."
-          $IS_MAVEN=false
+          $IS_MAVEN="false"
         fi
+        echo $IS_MAVEN
+    - run: echo "::set-output name=is-maven::$(echo $IS_MAVEN)"
       shell: bash
-    - id: set-maven
-      run: echo "::set-output name=is-maven::$(echo $IS_MAVEN)"
-      shell: bash
-    - name: If true
-      if: true=="::set-output name=is-maven::$(echo $IS_MAVEN)"
-      run: echo "is maven..............................................."
-    - name: If false
-      if: false=="::set-output name=is-maven::$(echo $IS_MAVEN)"
-      run: echo "is NOT maven..........................................."

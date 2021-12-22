@@ -1,0 +1,12 @@
+on: [push]
+
+jobs:
+  test-conditional:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - uses: actions/checkout@v2
+      - id: conditional
+        uses: ./
+      - run: echo IS_MAVEN ${{ steps.conditional.outputs.is-maven }}
+        shell: bash
