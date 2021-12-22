@@ -1,0 +1,35 @@
+name: 'Test Conditionals'
+description: 'Test Conditionals inside to an action'
+inputs:
+  isMaven:  # id of input
+    description: 'Who to greet'
+    required: false
+    default: 'true'
+outputs:
+  is-maven:
+    description: "Decide if the technology is build with maven"
+    value: ${{ steps.set-maven.outputs.is-maven }}
+runs:
+  using: "composite"
+  env:
+    IS_MAVEN: true
+  steps:
+    - name: Use container
+      uses: actions/checkout@v2
+    - name: Checks maven technology...
+      run: |
+        FILE=pom.xml     
+        if [ $FILE does not exist ]; then
+          echo "File $FILE does not exist."
+          $IS_MAVEN=false
+        fi
+      shell: bash
+    - id: set-maven
+      run: echo "::set-output name=is-maven::$(echo $IS_MAVEN)"
+      shell: bash
+    - name: If true
+      if: true=="::set-output name=is-maven::$(echo $IS_MAVEN)"
+      run: echo "is maven..............................................."
+    - name: If false
+      if: false=="::set-output name=is-maven::$(echo $IS_MAVEN)"
+      run: echo "is NOT maven..........................................."
